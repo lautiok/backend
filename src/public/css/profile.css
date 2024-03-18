@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f7ee;
+}
+
+.profile {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile h1 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.profile button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #75b79e;
+    color: #fff;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.profile button:hover {
+    background-color: #5a9276;
+}
+
+.profile button a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.profile button a:hover {
+    text-decoration: underline;
+}
+
+.profile p {
+    color: #555;
+    margin-bottom: 10px;
+}

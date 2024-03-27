@@ -1,98 +1,138 @@
 import passport from 'passport';
 import local from 'passport-local';
 import github from 'passport-github2';
-
-import userModel from '../dao/models/user.model.js';
+import jwt from 'passport-jwt';
+import { ExtractJwt } from 'passport-jwt';
+import { UsersManager } from '../dao/users.manager.js';
 import { createHash, isValidPassword } from '../utils.js';
 
-const localStrategy = local.Strategy;
 
+// Estrategias de autenticación de usuario
+const localStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+
+// Extrae el token de la cookie
+const cookieExtractor = (req) => {
+    return req && req.signedCookies ? req.signedCookies.token : null;
+};
+// Inicia la configuración de Passport
 const initializePassport = () => {
-    passport.use('register', new localStrategy(
-        { passReqToCallback: true, usernameField: 'email' },
+    // Estrategia de autenticación de usuario
+    passport.use('register', new localStrategy({
+        usernameField: 'email',
+        passReqToCallback: true,
+        session: false
+    },
         async (req, username, password, done) => {
             try {
-                const { first_name, last_name, email, age } = req.body;
-                if (!first_name || !last_name || !email || !age || !password) {
-                    return done(null, false, req.flash('error', 'faltan campos obligatorios'));
+                const { first_name, last_name, age } = req.body;
+                if (!first_name || !last_name || !username || !age || !password) {
+                    return done(null, false, 'Faltan campos obligatorios');
                 }
-                const user = await userModel.findOne({ email: username });
+                const user = await UsersManager.getInstance().getUserByEmail(username);
                 if (user) {
-                    return done(null, false, req.flash('error', 'usuario ya registrado'));
+                    return done(null, false, 'Ya existe un usuario registrado con este correo electrónico');
                 }
-                const newUser = {
+                const newUser = await UsersManager.getInstance().createUser({
                     first_name,
                     last_name,
-                    email,
+                    email: username,
                     age,
-                    password: createHash(password)
-                };
-                const result = await userModel.create(newUser);
-                return done(null, result);
+                    password
+                });
+                return done(null, newUser, 'Usuario registrado con éxito');
             } catch (error) {
-                return done(null, false, req.flash('error', 'error al registrarse'));
+                return done(error);
             }
         }
     ));
-
-    passport.use('login', new localStrategy(
-        { usernameField: 'email', passReqToCallback: true },
+    // Estrategia de autenticación de usuario
+    passport.use('login', new localStrategy({
+        usernameField: 'email',
+        passReqToCallback: true,
+        session: false
+    },
         async (req, username, password, done) => {
             try {
-                const user = await userModel.findOne({ email: username });
+                const { email, password } = req.body;
+                if (!email || !password) {
+                    return done(null, false, 'Faltan campos obligatorios');
+                }
+                const user = await UsersManager.getInstance().getUserByEmail(username);
                 if (!user) {
-                    return done(null, false, req.flash('error', 'usuario inexistente'));
+                    return done(null, false, 'Usuario inexistente');
                 }
                 if (!isValidPassword(password, user)) {
-                    return done(null, false, req.flash('error', 'contraseña incorrecta'));
+                    return done(null, false, 'Contraseña incorrecta');
                 }
-                return done(null, user);
+                return done(null, user, 'Usuario logueado con éxito');
             } catch (error) {
-                return done(null, false, req.flash('error', 'error al loguearse'));
+                return done(error);
             }
         }
     ));
-
+    // Estrategia de autenticación con GitHub
     passport.use('github', new github.Strategy({
         clientID: 'Iv1.3523fcc95d8c3f6d',
         clientSecret: '468bda5d0555a54f090eb35685800271ba7ae5e1',
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
     },
-        async (accessToken, refreshToken, profile, done) => {
-            try {
-                const user = await userModel.findOne({ email: profile._json.email });
-                if (user) {
-                    return done(null, user);
-                } else {
-                    const newUser = {
-                        first_name: profile._json.name,
-                        last_name: '',
-                        email: profile._json.email,
-                        age: 18,
-                        password: ''
-                    };
-                    const result = await userModel.create(newUser);
-                    return done(null, result);
-                }
-            } catch (error) {
-                return done(null, false, req.flash('error', 'error al loguearse con GitHub'));
-            }
-        }
-    ));
-
-    passport.serializeUser((user, done) => {
-        done(null, user._id);
-    });
-
-    passport.deserializeUser(async (id, done) => {
+    async (accessToken, refreshToken, profile, done) => {
         try {
-            const user = await userModel.findOne({ _id: id });
-            done(null, user);
+            const user = await UsersManager.getInstance().getUserByEmail(profile._json.email);
+            if (user) {
+                return done(null, user, 'Usuario logueado con éxito');
+            } else {
+                const newUser = {
+                    first_name: profile._json.name,
+                    email: profile._json.email,
+                };
+                const result = await UsersManager.getInstance().createUser(newUser);
+                return done(null, result, 'Usuario registrado y logueado con éxito');
+            }
+        } catch (error) {
+            return done(error);
         }
-        catch (error) {
-            done(`Error al deserializar usuario: ${error}`);
+    }
+));
+ // Estrategia para restaurar contraseña 
+passport.use('restore', new localStrategy({
+    usernameField: 'email',
+    passReqToCallback: true,
+    session: false
+},
+    async (req, username, password, done) => {
+        try {
+            const { email, password } = req.body;
+            if (!email || !password) {
+                return done(null, false, 'Faltan campos obligatorios');
+            }
+            const user = await UsersManager.getInstance().getUserByEmail(username);
+            if (!user) {
+                return done(null, false, 'Usuario inexistente');
+            }
+            user.password = createHash(password);
+            await user.save();
+            return done(null, user, 'Contraseña restaurada con éxito');
+        } catch (error) {
+            return done(error);
         }
-    });
+    }
+));
+
+// Estrategia para verificar la validez del token JWT
+passport.use('current', new JWTStrategy({
+    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+    secretOrKey: 'myPKey'
+},
+    async (jwtPayload, done) => {
+        try {
+            return done(null, jwtPayload);
+        } catch (error) {
+            return done(error);
+        }
+    }
+));
 };
 
 export default initializePassport;

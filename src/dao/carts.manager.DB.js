@@ -1,13 +1,12 @@
-import cartModel from './models/cart.model.js'; // Importa el modelo de carrito
-import { ProductsManagerDB } from './products.manager.DB.js'; // Importa el gestor de productos
+import cartModel from './models/cart.model.js';
+import { ProductsManagerDB } from './products.manager.DB.js';
 
-// Clase que gestiona los carritos en la base de datos
 export class CartsManagerDB {
-    static #instance; // Instancia única de la clase
+    static #instance;
 
     constructor() { }
 
-    // Método estático para obtener una instancia única de la clase
+    // Método para obtener la instancia única de CartsManagerDB
     static getInstance() {
         if (!CartsManagerDB.#instance) {
             CartsManagerDB.#instance = new CartsManagerDB();
@@ -15,7 +14,7 @@ export class CartsManagerDB {
         return CartsManagerDB.#instance;
     }
 
-    // Obtiene un carrito por su ID en la base de datos
+    // Método para obtener un carrito por su ID
     async getCartById(id) {
         try {
             if (id.length !== 24) {
@@ -27,15 +26,11 @@ export class CartsManagerDB {
             }
             return cart;
         } catch (error) {
-            if (error.name === 'CastError') {
-                throw new Error('El formato del ID es incorrecto');
-            }
-            console.error('Error en getCartById:', error);
-            throw new Error('Ocurrió un error al obtener el carrito');
+            throw error;
         }
     }
 
-    // Crea un nuevo carrito en la base de datos
+    // Método para crear un nuevo carrito
     async createCart() {
         try {
             const cart = await cartModel.create({});
@@ -44,12 +39,11 @@ export class CartsManagerDB {
             }
             return cart;
         } catch (error) {
-            console.error('Error en createCart:', error);
-            throw new Error('Ocurrió un error al crear el carrito');
+            throw error;
         }
     }
 
-    // Agrega un producto al carrito especificado
+    // Método para añadir un producto al carrito
     async addProduct(cartId, productId, quantity) {
         try {
             await ProductsManagerDB.getInstance().getProductById(productId);
@@ -64,14 +58,14 @@ export class CartsManagerDB {
             cart = await this.getCartById(cartId);
             return cart;
         } catch (error) {
-            console.error('Error en addProduct:', error);
-            throw new Error('Ocurrió un error al agregar el producto al carrito');
+            throw error;
         }
     }
 
-    // Actualiza el carrito con la lista de productos proporcionada
+    // Método para actualizar un carrito con nuevos productos
     async updateCart(id, products) {
         try {
+            // Validar los productos antes de actualizar el carrito
             const promises = products.map(product => {
                 return ProductsManagerDB.getInstance().getProductById(product.product)
                     .catch(error => {
@@ -92,12 +86,11 @@ export class CartsManagerDB {
             cart = await this.getCartById(id);
             return cart;
         } catch (error) {
-            console.error('Error en updateCart:', error);
-            throw new Error('Ocurrió un error al actualizar el carrito');
+            throw error;
         }
     }
 
-    // Actualiza la cantidad de un producto en el carrito especificado
+    // Método para actualizar la cantidad de un producto en el carrito
     async updateProductQuantity(cartId, productId, quantity) {
         try {
             let cart = await this.getCartById(cartId);
@@ -111,12 +104,11 @@ export class CartsManagerDB {
             cart = await this.getCartById(cartId);
             return cart;
         } catch (error) {
-            console.error('Error en updateProductQuantity:', error);
-            throw new Error('Ocurrió un error al actualizar la cantidad del producto en el carrito');
+            throw error;
         }
     }
 
-    // Elimina un carrito de la base de datos
+    // Método para eliminar un carrito
     async deleteCart(id) {
         try {
             let cart = await this.getCartById(id);
@@ -124,12 +116,11 @@ export class CartsManagerDB {
             cart = await this.getCartById(id);
             return cart;
         } catch (error) {
-            console.error('Error en deleteCart:', error);
-            throw new Error('Ocurrió un error al eliminar el carrito');
+            throw error;
         }
     }
 
-    // Elimina un producto específico del carrito
+    // Método para eliminar un producto del carrito
     async removeProduct(cartId, productId) {
         try {
             let cart = await this.getCartById(cartId);
@@ -143,8 +134,7 @@ export class CartsManagerDB {
             cart = await this.getCartById(cartId);
             return cart;
         } catch (error) {
-            console.error('Error en removeProduct:', error);
-            throw new Error('Ocurrió un error al eliminar el producto del carrito');
+            throw error;
         }
     }
 }

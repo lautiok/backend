@@ -1,6 +1,6 @@
 <div class="register-container">
         <h1>Registrarse</h1>
-        <form action="/api/sessions/register" method="post">
+        <form id="register-form" action="/api/sessions/register" method="post">
             <div>
                 <label for="first_name">Nombre</label>
                 <input type="text" id="first_name" name="first_name" required>
@@ -25,3 +25,5 @@
             <button><a href="/login">Volver</a></button>
         </form>
     </div>
+
+    <script src="/js/register.js"></script>

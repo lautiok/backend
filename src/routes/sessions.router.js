@@ -1,91 +1,78 @@
-import express from 'express';
-import passport from 'passport';
+import express from 'express'; 
+import passport from 'passport'; 
 
-// Importar el modelo de usuario y la función para crear hash
-import userModel from '../dao/models/user.model.js';
-import { createHash } from '../utils.js';
+import { generateToken } from '../utils.js';
 
-// Crear un enrutador de Express
 const router = express.Router();
 
-// Ruta para registrar un nuevo usuario
-router.post('/register', passport.authenticate('register', { failureRedirect: '/api/sessions/fail' }),
-    async (req, res) => res.redirect('/login'));
-
-// Ruta para iniciar sesión
-router.post('/login', passport.authenticate('login', { failureRedirect: '/api/sessions/fail' }),
-    async (req, res) => {
-        const { user } = req;
-        if (user) {
-            // Si se ha iniciado sesión correctamente, almacenar los datos del usuario en la sesión
-            req.session.user = {
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                age: user.age,
-                role: 'user'
-            };
-            res.redirect('/products');
+// Ruta para el registro de usuarios
+router.post('/register', (req, res, next) => {
+    passport.authenticate('register', (error, user, info) => { // Utiliza Passport para autenticar el registro
+        if (error) {
+            res.status(500).json({ status: 'error', message: error.message });
+        } else if (!user) {
+            res.status(401).json({ status: 'error', message: info });
+        } else {
+            res.status(201).json({ status: 'success', message: info });
         }
-    }
-);
+    })(req, res, next);
+});
 
-// Ruta para autenticación con GitHub
+// Ruta para el inicio de sesión de usuarios
+router.post('/login', (req, res, next) => {
+    passport.authenticate('login', (error, user, info) => { // Utiliza Passport para autenticar el inicio de sesión
+        if (error) {
+            res.status(500).json({ status: 'error', message: error.message });
+        } else if (!user) {
+            res.status(401).json({ status: 'error', message: info });
+        } else {
+            generateToken(res, user); // Genera un token de autenticación para el usuario
+            res.status(200).json({ status: 'success', message: info });
+        }
+    })(req, res, next);
+});
+
+// Ruta para la autenticación con GitHub
 router.get('/github',
     passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { }
 );
 
-// Ruta de retorno de autenticación con GitHub
-router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/api/sessions/fail' }),
-    async (req, res) => {
-        const { user } = req;
-        if (user) {
-            // Almacenar los datos del usuario en la sesión después de la autenticación con GitHub
-            req.session.user = {
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                age: user.age,
-                role: 'user'
-            };
-            res.redirect('/products');
+// Ruta de callback para la autenticación con GitHub
+router.get('/githubcallback', (req, res, next) => {
+    passport.authenticate('github', (error, user, info) => { // Maneja el callback de autenticación de GitHub
+        if (error) {
+            return res.redirect(`/login?success=false&message=${error.message}`);
+        } else if (!user) {
+            return res.redirect(`/login?success=false&message=${info}`);
+        } else {
+            generateToken(res, user); // Genera un token de autenticación para el usuario
+            return res.redirect(`/login?success=true&message=${info}`);
         }
-    }
-);
-
-// Ruta para manejar errores de autenticación
-router.get('/fail', (req, res) => {
-    // Obtener el mensaje de error de la sesión flash
-    const errorMessage = req.flash('error')[0];
-    res.status(401).json({ error: errorMessage });
+    })(req, res, next);
 });
 
-// Ruta para restablecer la contraseña de un usuario
-router.post('/restore', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+// Ruta para restaurar contraseña
+router.post('/restore', (req, res, next) => {
+    passport.authenticate('restore', (error, user, info) => { // Utiliza Passport para autenticar la restauración de contraseña
+        if (error) {
+            res.status(500).json({ status: 'error', message: error.message });
+        } else if (!user) {
+            res.status(401).json({ status: 'error', message: info });
+        } else {
+            res.status(201).json({ status: 'success', message: info });
         }
-        const user = await userModel.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ error: 'Usuario inexistente' });
-        }
-        // Restablecer la contraseña y guardar el usuario actualizado
-        user.password = createHash(password);
-        await user.save();
-        res.redirect('/login');
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    })(req, res, next);
+});
+
+// Ruta para obtener información del usuario actual
+router.get('/current', passport.authenticate('current', { session: false }), (req, res) => {
+    res.status(200).json({ status: 'success', payload: req.user });
 });
 
 // Ruta para cerrar sesión
-router.post('/logout', (req, res) => {
-    // Destruir la sesión y redirigir al usuario a la página de inicio de sesión
-    req.session.destroy();
-    res.redirect('/login');
+router.post('/logout', passport.authenticate('current', { session: false }), (req, res) => {
+    res.clearCookie('token'); // Borra la cookie de autenticación
+    res.status(200).json({ status: 'success', message: 'Sesión cerrada con éxito' });
 });
 
-// Exportar el enrutador
-export default router;
+export default router; // Exporta el enrutador para su uso en otros archivos

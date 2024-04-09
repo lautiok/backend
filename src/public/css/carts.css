@@ -1,0 +1,75 @@
+.cart-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #555;
+    /* Color de texto gris oscuro */
+}
+
+h2 {
+    text-align: center;
+    color: #555;
+    /* Color de texto gris oscuro */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #75b79e;
+    /* Verde pastel más oscuro */
+    color: #fff;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #5a9276;
+    /* Verde pastel más claro en hover */
+}
+
+button a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+button a:hover {
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #75b79e;
+    /* Verde pastel más oscuro */
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}

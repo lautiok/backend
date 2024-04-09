@@ -1,0 +1,51 @@
+
+<div class="header">
+    <h1>Listado de productos</h1>
+    <h2>Hola {{user.first_name}} {{user.last_name}} ({{user.role}})</h2>
+</div>
+<div class="b-container">
+    <form action="/api/sessions/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+
+    <button id="view-cart" onclick="viewCart()">Ver carrito</button>
+
+    <button>
+        <a href="/profile">Ver perfil</a>
+    </button>
+</div>
+<div class="card-container">
+    {{#each products.docs}}
+    <div class="card">
+        <div class="card-header">
+            <h3>{{title}}</h3>
+            <p>ID: {{id}}</p>
+            <img class="card-img-top" src="{{thumbnails}}" alt="{{title}}">
+        </div>
+        <div class="card-body"></p>
+            
+            <p><strong>Descripción:</strong> {{description}}</p>
+            <p><strong>Categoría:</strong> {{category}}</p>
+            <p><strong>Status:</strong> {{status}}</p>
+            <p><strong>Precio:</strong> ${{price}}</p>
+        </div>
+        <div class="card-footer">
+            <button onclick="addProductToCart('{{id}}')">Agregar</button>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<div class="pagination">
+    {{#if products.hasPrevPage}}
+        <a href={{products.prevLink}}> << </a>
+    {{/if}}
+
+    <p>{{products.page}} de {{products.totalPages}}</p>
+
+    {{#if products.hasNextPage}}
+        <a href={{products.nextLink}}> >> </a>
+    {{/if}}
+</div>
+
+<script src="/js/products.js"></script>

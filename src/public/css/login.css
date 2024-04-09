@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f7ee;
+    /* Verde pastel */
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    max-width: 300px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #555;
+    /* Color de texto gris oscuro */
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    /* Color de texto gris oscuro */
+}
+
+input[type="email"],
+input[type="password"],
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #75b79e;
+    /* Verde pastel más oscuro */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #5a9276;
+    /* Verde pastel más claro en hover */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+button a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+button a:hover {
+    text-decoration: underline;
+}
+
+.github {
+    background-color: #000000;
+    padding: 1rem;
+    color: #ffffff;
+    border-radius: 10px;
+}

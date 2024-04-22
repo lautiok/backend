@@ -1,0 +1,42 @@
+<h1>Listado de productos</h1>
+
+<h2>Bienvenido {{user.first_name}}</h2>
+
+<nav>
+    <a href="/cart/{{user.cart}}">Carrito</a>
+
+    <a href="/profile">Perfil</a>
+
+    <a href="/chat">Chat</a>
+
+    <button onclick="logout()">Cerrar sesión</button>
+</nav>
+
+<div class="products-container">
+    {{#each products}}
+    <div class="product-card">
+        <h3>{{title}}</h3>
+        <p>{{category}}</p>
+        <p><strong>${{price}}</strong></p>
+        <a href="/product/{{_id}}">Comprar</a>
+    </div>
+    {{/each}}
+</div>
+
+<div>
+    {{#if pagination.hasPrevPage}}
+    <a href={{pagination.prevLink}}>Anterior</a>
+    {{else}}
+    <a>Anterior</a>
+    {{/if}}
+
+    <p>Página {{pagination.page}} de {{pagination.totalPages}}</p>
+
+    {{#if pagination.hasNextPage}}
+    <a href={{pagination.nextLink}}>Siguiente</a>
+    {{else}}
+    <a>Siguiente</a>
+    {{/if}}
+</div>
+
+<script src="/js/user/products.js"></script>

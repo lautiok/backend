@@ -1,0 +1,56 @@
+<h1>Listado de productos</h1>
+
+<h2>Bienvenido {{user.first_name}}</h2>
+
+<nav>
+    <a href="/admin/add-product">Agregar producto</a>
+
+    <button onclick="logout()">Cerrar sesión</button>
+</nav>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Código</th>
+        <th>Precio</th>
+        <th>Status</th>
+        <th>Stock</th>
+        <th>Categoría</th>
+    </tr>
+
+    {{#each products}}
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{title}}</td>
+        <td>{{description}}</td>
+        <td>{{code}}</td>
+        <td>${{price}}</td>
+        <td>{{status}}</td>
+        <td>{{stock}}</td>
+        <td>{{category}}</td>
+        <td class="last-td">
+            <a href="/admin/product/{{_id}}">Ver</a>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+<div>
+    {{#if pagination.hasPrevPage}}
+    <a href={{pagination.prevLink}}>Anterior</a>
+    {{else}}
+    <a>Anterior</a>
+    {{/if}}
+
+    <p>Página {{pagination.page}} de {{pagination.totalPages}}</p>
+
+    {{#if pagination.hasNextPage}}
+    <a href={{pagination.nextLink}}>Siguiente</a>
+    {{else}}
+    <a>Siguiente</a>
+    {{/if}}
+</div>
+
+<script src="/js/admin/products.js"></script>

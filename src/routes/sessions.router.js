@@ -1,15 +1,54 @@
-import express from 'express';
+import CustomRouter from './custom.router.js';
+import SessionsController from '../controllers/sessions.controller.js';
 import passport from 'passport';
-import { registrarUsuario, iniciarSesion, autenticarGitHub, callbackGitHub, restaurarContraseña, obtenerUsuarioActual, cerrarSesion } from '../controllers/sessions.controller.js';
+import UserWithoutPasswordDTO from '../dao/dtos/user.without.password.dto.js';
+import { Router } from 'express';
 
-const router = express.Router();
+export default class SessionsRouter extends CustomRouter {
+    static #instance;
 
-router.post('/register', registrarUsuario);
-router.post('/login', iniciarSesion);
-router.get('/github', autenticarGitHub);
-router.get('/githubcallback', callbackGitHub);
-router.post('/restore', restaurarContraseña);
-router.get('/current', passport.authenticate('current', { session: false }), obtenerUsuarioActual);
-router.post('/logout', passport.authenticate('current', { session: false }), cerrarSesion);
+    constructor() {
+        super();
+    }
 
-export default router;
+    static getInstance() {
+        if (!this.#instance) {
+            this.#instance = new SessionsRouter();
+        }
+        return this.#instance;
+    }
+
+    init() {
+        this.post('/register', ['PUBLIC'], this.passportAuthentication('register'), SessionsController.getInstance().register);
+
+        this.post('/login', ['PUBLIC'], this.passportAuthentication('login'), SessionsController.getInstance().login);
+
+        this.get('/github', ['PUBLIC'], this.passportAuthentication('github', { scope: ['user:email'] }));
+
+        this.get('/githubcallback', ['PUBLIC'], this.passportAuthentication('github'), SessionsController.getInstance().githubCallback);
+
+        this.post('/restore-password', ['PUBLIC'], SessionsController.getInstance().restorePassword);
+
+        this.post('/reset-password', ['PUBLIC'], SessionsController.getInstance().resetPassword);
+
+        this.get('/current', ['USER', 'ADMIN'], this.passportAuthentication('current'), SessionsController.getInstance().current);
+
+        this.post('/logout', ['USER', 'ADMIN'], SessionsController.getInstance().logout);
+    }
+
+    passportAuthentication(...args) {
+        return async (req, res, next) => {
+            passport.authenticate(...args, { session: false }, (error, user, info) => {
+                if (error) {
+                    return res.sendServerError(error.message);
+                }
+                if (!user) {
+                    return res.sendUserError(info);
+                }
+                const UserWithoutPassword = new UserWithoutPasswordDTO(user);
+                req.user = { ...UserWithoutPassword };
+                next();
+            })(req, res, next);
+        }
+    }
+}

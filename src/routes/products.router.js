@@ -1,22 +1,40 @@
-import express from 'express';
-import { obtenerProductos, obtenerProductoPorId, crearProducto, actualizarProducto, eliminarProducto } from '../controllers/Products.controller.js';
+import CustomRouter from './custom.router.js';
+import ProductsController from '../controllers/products.controller.js';
 
-const router = express.Router();
+export default class ProductsRouter extends CustomRouter {
+    static #instance;
 
-router.use((req, res, next) => {
-    if (req.method === 'POST' || req.method === 'PUT') {
-        const { title, description, code, price, status, stock, category, thumbnails } = req.body;
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
-            return res.status(400).json({ error: 'Faltan campos obligatorios' });
-        }
+    constructor() {
+        super();
     }
-    next();
-});
 
-router.get('/', obtenerProductos);
-router.get('/:pid', obtenerProductoPorId);
-router.post('/', crearProducto);
-router.put('/:pid', actualizarProducto);
-router.delete('/:pid', eliminarProducto);
+    static getInstance() {
+        if (!this.#instance) {
+            this.#instance = new ProductsRouter();
+        }
+        return this.#instance;
+    }
 
-export default router;
+    init() {
+        this.get('/', ['USER', 'ADMIN'], ProductsController.getInstance().getProducts);
+
+        this.get('/:pid', ['USER', 'ADMIN'], ProductsController.getInstance().getProductById);
+
+        this.post('/', ['ADMIN'], this.validateProduct, ProductsController.getInstance().createProduct);
+
+        this.put('/:pid', ['ADMIN'], this.validateProduct, ProductsController.getInstance().updateProduct);
+
+        this.delete('/:pid', ['ADMIN'], ProductsController.getInstance().deleteProduct);
+    }
+
+    validateProduct(req, res, next) {
+        const { title, code, price } = req.body;
+        if (!title || !code || !price) {
+            return res.sendUserError('Los campos título, código y precio son obligatorios');
+        }
+        if (isNaN(price) || price < 0) {
+            return res.sendUserError('El precio debe ser un número positivo');
+        }
+        next();
+    }
+}

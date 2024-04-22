@@ -1,0 +1,154 @@
+/* Estilos generales */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #202124; /* Color de fondo oscuro */
+    color: #ffffff; /* Color de texto claro */
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto; /* Centrar el contenido */
+    padding: 20px;
+    background-color: #292b2f; /* Color de fondo de contenedor */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra */
+}
+
+h1 {
+    color: #61dafb; /* Color de encabezado */
+    text-align: center;
+}
+
+nav {
+    background-color: #444;
+    padding:20px;
+    margin-bottom: 20px; /* Separación */
+    border-radius: 5px;
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #a0d8f1;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    color: #a0d8f1;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+    width: calc(100% - 20px); /* Ancho menos el padding */
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background-color: #333;
+    color: #ffffff;
+}
+
+select {
+    width: 100%;
+}
+
+button {
+    background-color: #61dafb;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a0d8f1;
+}
+
+.product-info {
+    border: 1px solid #666;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #666;
+    padding: 8px;
+    text-align: left;
+}
+
+.last-td {
+    text-align: center;
+}
+
+/* Modo oscuro */
+
+.dark-mode {
+    background-color: #202124;
+    color: #ffffff;
+}
+
+.dark-mode .container {
+    background-color: #292b2f;
+}
+
+.dark-mode h1 {
+    color: #61dafb;
+}
+
+.dark-mode nav {
+    background-color: #444;
+}
+
+.dark-mode a {
+    color: #61dafb;
+}
+
+.dark-mode a:hover {
+    color: #a0d8f1;
+}
+
+.dark-mode label {
+    color: #a0d8f1;
+}
+
+.dark-mode input[type="text"],
+.dark-mode input[type="email"],
+.dark-mode input[type="password"],
+.dark-mode input[type="number"],
+.dark-mode select {
+    background-color: #333;
+    color: #ffffff;
+}
+
+.dark-mode button {
+    background-color: #61dafb;
+    color: #ffffff;
+}
+
+.dark-mode button:hover {
+    background-color: #a0d8f1;
+}

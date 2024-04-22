@@ -50,16 +50,12 @@ A continuación, puedes ver una demostración de la interfaz gráfica de usuario
 
 LOGIN (http://localhost:8080/login)
 
-[![Demo](./src/public/imgproyecto/Capture-login.PNG)](http://localhost:8080/login)
+[![Demo](./src/public/img/Capture-login.PNG)](http://localhost:8080/login)
 
 REGISTRO (http://localhost:8080/register)
 
-[![Demo](./src/public/imgproyecto/Capture-registro.PNG)](http://localhost:8080/register)
+[![Demo](./src/public/img/Capture-registro.PNG)](http://localhost:8080/register)
 
 PRODUCTOS (http://localhost:8080/products)
 
-[![Demo](./src/public/imgproyecto/Capture-products.PNG)](http://localhost:8080/products)
-
-CARDS (http://localhost:8080/card/id)
-
-[![Demo](./src/public/imgproyecto/Capture-card.PNG)](http://localhost:8080/card)
+[![Demo](./src/public/img/Capture-products.PNG)](http://localhost:8080/products)

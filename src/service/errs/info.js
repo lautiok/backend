@@ -1,8 +1,6 @@
-export const generateErrorInfo=(user)=>{
-    return `Una o más propiedades estaban incompletas o inválidas.
-      Lista de propiedades requeridas:
-     * first_name: necesita un String, se recibió ${user.first_name}
-      * last_name: necesita un String, se recibió ${user.last_name}
-     * email: necesita un String, se recibió ${user.email}
-     `;
-   }
+export const generateNewProductErrorInfo = (product) => {
+  return 'alguno de los campos ingresados no es válido.' +
+      '\n- título es requerido y se recibió' + product.title +
+      '\n- código es requerido y se recibió' + product.code +
+      '\n- precio es requerido un número positivo y se recibió' + product.price;
+}

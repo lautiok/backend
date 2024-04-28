@@ -1,7 +1,5 @@
-const EErrors = {
-    ROUTING_ERROR: 1,
-    INVALID_TYPES_ERROR: 2,
-    DATA_BASE_ERROR: 3,
+const eErrors = {
+    INVALID_TYPES_ERROR: 2
 }
 
-export default EErrors
+export default eErrors

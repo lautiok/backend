@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
-import config from '../config/config.js';
-
+import dotenv from 'dotenv';
 export let Products, Carts, Users, Tickets, Messages;
+
+dotenv.config();
 
 export default async function initializePersistence(persistence) {
     switch (persistence) {
         case 'mongo':
-            mongoose.connect(config.mongoUrl)
+            mongoose.connect(process.env.MONGO_URL)
                 .then(() => console.log('Base de datos conectada'))
                 .catch(error => console.log(`Error en la conexión a la base de datos: ${error}`));
             const { default: ProductsMongoDAO } = await import('../dao/mongo/products.mongo.dao.js');

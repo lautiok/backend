@@ -7,13 +7,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import handlebars from 'express-handlebars';
 import passport from 'passport';
+import compression from 'compression';
 import initializePassport from './config/passport.config.js';
 import ProductsRouter from './routes/products.router.js';
 import CartsRouter from './routes/carts.router.js';
 import SessionsRouter from './routes/sessions.router.js';
 import ViewsRouter from './routes/views.router.js';
 import initializeSocket from './config/socket.config.js';
-import {errorHandler} from './middlewares/errs/index.js';
 
 program.option('-p, --persistence <type>', 'mongo o fs', 'mongo').parse();
 if (!program.opts().persistence) {
@@ -26,7 +26,7 @@ const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 
-app.use(errorHandler);
+app.use(compression({ brotli: {enabled: true, zlib: {} } }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));

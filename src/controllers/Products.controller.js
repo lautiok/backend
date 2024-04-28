@@ -1,4 +1,7 @@
 import ProductsRepository from '../repositories/products.repository.js';
+import CustomError from '../service/errs/custom.error.js';
+import { generateNewProductErrorInfo } from '../service/errs/info.js';
+import EErrors from '../service/errs/enum.js';
 
 export default class ProductsController {
     static #instance;
@@ -39,6 +42,15 @@ export default class ProductsController {
 
     async createProduct(req, res) {
         try {
+            const { title, code, price } = req.body;
+            if (!title || !code || !price || isNaN(price) || price <= 0) {
+                CustomError.createError({
+                    name: 'Error de creación de producto',
+                    cause: generateNewProductErrorInfo({ title, code, price }),
+                    message: 'Error al intentar crear producto',
+                    code: EErrors.VALIDATION_ERROR
+                });
+            }
             const newProduct = req.body;
             const product = await ProductsRepository.getInstance().getProductByCode(newProduct.code);
             if (product) {
@@ -48,10 +60,12 @@ export default class ProductsController {
             res.sendSuccessPayload(payload);
         } catch (error) {
             console.log(error);
+            if (error.code === 1) {
+                return res.sendUserError(`${error.message}: ${error.cause}`);
+            }
             res.sendServerError(error.message);
         }
     }
-
     async updateProduct(req, res) {
         try {
             const { pid } = req.params;

@@ -2,7 +2,6 @@ import CustomRouter from './custom.router.js';
 import SessionsController from '../controllers/sessions.controller.js';
 import passport from 'passport';
 import UserWithoutPasswordDTO from '../dao/dtos/user.without.password.dto.js';
-import { Router } from 'express';
 
 export default class SessionsRouter extends CustomRouter {
     static #instance;

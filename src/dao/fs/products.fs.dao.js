@@ -45,8 +45,6 @@ export default class ProductsFsDAO {
             const hasNextPage = page < totalPages;
             const prevPage = hasPrevPage ? page - 1 : null;
             const nextPage = hasNextPage ? page + 1 : null;
-            const prevLink = hasPrevPage ? `/products?page=${prevPage}` : null;
-            const nextLink = hasNextPage ? `/products?page=${nextPage}` : null;
             return {
                 docs: paginatedProducts,
                 totalDocs,
@@ -57,9 +55,7 @@ export default class ProductsFsDAO {
                 hasPrevPage,
                 hasNextPage,
                 prevPage,
-                nextPage,
-                prevLink,
-                nextLink
+                nextPage
             };
         } catch (error) {
             throw error;

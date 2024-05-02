@@ -26,8 +26,6 @@ export default class ProductsRepository {
                 page = products.totalPages;
                 products = await Products.getInstance().getProducts({ limit, page, status, category, sort });
             }
-            products.prevLink = products.prevPage ? `/products?page=${products.prevPage}` : null;
-            products.nextLink = products.nextPage ? `/products?page=${products.nextPage}` : null;
             return products;
         } catch (error) {
             throw error;
@@ -52,6 +50,9 @@ export default class ProductsRepository {
 
     async createProduct(product) {
         try {
+            if (product.stock === 0) {
+                product.status = false;
+            }
             const newProduct = new ProductDTO(product);
             return await Products.getInstance().createProduct(newProduct);
         } catch (error) {
@@ -61,6 +62,9 @@ export default class ProductsRepository {
 
     async updateProduct(id, product) {
         try {
+            if (product.stock === 0) {
+                product.status = false;
+            }
             const updatedProduct = new ProductDTO(product);
             return await Products.getInstance().updateProduct(id, updatedProduct);
         } catch (error) {

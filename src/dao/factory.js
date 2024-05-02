@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-export let Products, Carts, Users, Tickets, Messages;
 
 dotenv.config();
+
 
 export default async function initializePersistence(persistence) {
     switch (persistence) {
@@ -39,3 +39,5 @@ export default async function initializePersistence(persistence) {
             throw new Error('Tipo de persistencia no soportado');
     }
 }
+
+export let Products, Carts, Users, Tickets, Messages;

@@ -8,6 +8,7 @@ import UsersRepository from '../repositories/users.repository.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 const cookieExtractor = req => req?.signedCookies?.token ?? null;
 
 const initializePassport = () => {

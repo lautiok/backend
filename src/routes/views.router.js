@@ -46,7 +46,7 @@ export default class ViewsRouter extends CustomRouter {
 
         this.get('/mockingproducts', ['ALL'], ViewsController.getInstance().showMockingProducts);
 
-        this.get('/logger-test', ['ALL'], ViewsController.getInstance().showLoggerTest);
+        this.get('/loggertest', ['ALL'], ViewsController.getInstance().showLoggerTest);
 
         this.get('*', ['ALL'], ViewsController.getInstance().renderNotFound);
     }

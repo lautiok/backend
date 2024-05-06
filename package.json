@@ -4,8 +4,8 @@
     "main": "./src/app.js",
     "type": "module",
     "scripts": {
-        "dev": "nodemon ./src/app.js -p mongo"
-
+        "dev": "cross-env NODE_ENV=development nodemon ./src/app.js -p mongo",
+        "start": "cross-env NODE_ENV=production node ./src/app.js -p mongo"
     },
     "keywords": [],
     "license": "ISC",

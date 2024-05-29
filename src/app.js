@@ -15,6 +15,8 @@ import CartsRouter from './routes/carts.router.js';
 import SessionsRouter from './routes/sessions.router.js';
 import ViewsRouter from './routes/views.router.js';
 import initializeSocket from './config/socket.config.js';
+import swaggerSpecs from './config/swagger.config.js';
+import swaggerUi from 'swagger-ui-express';
 
 program.option('-p, --persistence <type>', 'Tipo de persistencia (mongo o fs)').parse();
 if (!program.opts().persistence) {
@@ -48,6 +50,8 @@ app.use('/api/products', ProductsRouter.getInstance().getRouter());
 app.use('/api/carts', CartsRouter.getInstance().getRouter());
 app.use('/api/sessions', SessionsRouter.getInstance().getRouter());
 app.use('/', ViewsRouter.getInstance().getRouter());
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 
 const httpServer = app.listen(PORT, () => console.log(`Servidor escuchando en el puerto ${PORT}`));
 

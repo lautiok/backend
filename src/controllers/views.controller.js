@@ -39,6 +39,7 @@ export default class ViewsController {
         try {
             const queryParams = req.query;
             const user = req.user;
+            user.isPremium = user.role === 'premium';
             const payload = await ProductsRepository.getInstance().getProducts(queryParams);
             const { docs: products, ...pagination } = payload;
             const baseUrl = '/products';
@@ -162,4 +163,52 @@ export default class ViewsController {
     renderNotFound(req, res) {
         res.redirect('/');
     }
+
+    async renderPremiumProducts(req, res) {
+        try {
+            const queryParams = req.query;
+            const user = req.user;
+            const payload = await ProductsServices.getInstance().getProductsByOwner(queryParams, user.email);
+            const { docs: products, ...pagination } = payload;
+            const baseUrl = '/premium/products';
+            if (pagination.hasPrevPage) {
+                pagination.prevLink = `${baseUrl}?${new URLSearchParams({ ...queryParams, page: pagination.page - 1 }).toString()}`;
+            }
+            if (pagination.hasNextPage) {
+                pagination.nextLink = `${baseUrl}?${new URLSearchParams({ ...queryParams, page: pagination.page + 1 }).toString()}`;
+            }
+            res.render('premium/products', { user, products, pagination });
+        } catch (error) {
+            res.sendServerError(error.message);
+        }
+    }
+
+    async renderPremiumProduct(req, res) {
+        try {
+            const { pid } = req.params;
+            const user = req.user;
+            const product = await ProductsServices.getInstance().getProductById(pid);
+            res.render('premium/product', { user, product });
+        } catch (error) {
+            res.sendServerError(error.message);
+        }
+    }
+
+    async renderPremiumAddProduct(req, res) {
+        const user = req.user;
+        res.render('premium/add-product', { user });
+    }
+
+    async renderPremiumEditProduct(req, res) {
+        try {
+            const { pid } = req.params;
+            const user = req.user;
+            const product = await ProductsServices.getInstance().getProductById(pid);
+            res.render('premium/edit-product', { user, product });
+        } catch (error) {
+            res.sendServerError(error.message);
+        }
+    }
+
+    
 }

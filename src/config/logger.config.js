@@ -57,7 +57,7 @@ export const addLogger = (req, res, next) => {
     Object.keys(customLevelOptions.levels).forEach(level => {
         logger[level] = (message) => logger.log({ level, message });
     });
-    if (!req.originalUrl.startsWith('/api')) {
+    if (!req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/api/docs')) {
         return next();
     }
     const currentDate = new Date().toLocaleDateString();

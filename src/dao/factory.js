@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
 dotenv.config();
-
+export let Products, Carts, Users, Tickets, Messages;
 
 export default async function initializePersistence(persistence) {
     switch (persistence) {
         case 'mongo':
-            mongoose.connect(process.env.MONGO_URL)
+            mongoose.connect(process.env.MONGO_URL, { dbName: 'ecommerce' })
                 .then(() => console.log('Base de datos conectada'))
                 .catch(error => console.log(`Error en la conexión a la base de datos: ${error}`));
             const { default: ProductsMongoDAO } = await import('../dao/mongo/products.mongo.dao.js');
@@ -39,5 +38,3 @@ export default async function initializePersistence(persistence) {
             throw new Error('Tipo de persistencia no soportado');
     }
 }
-
-export let Products, Carts, Users, Tickets, Messages;

@@ -62,6 +62,52 @@ export default class ProductsFsDAO {
         }
     }
 
+    getProductsByOwner(queryParams, owner) {
+        try {
+            const { limit, page, status, category, sort } = queryParams;
+            let filteredProducts = this.products.filter(product => product.owner === owner);
+            if (status !== null) {
+                filteredProducts = filteredProducts.filter(product => product.status === status);
+            }
+            if (category) {
+                filteredProducts = filteredProducts.filter(product => product.category === category);
+            }
+            const totalDocs = filteredProducts.length;
+            if (sort) {
+                const sortByKey = Object.keys(sort)[0];
+                const sortOrder = sort[sortByKey];
+                filteredProducts.sort((a, b) => {
+                    if (a[sortByKey] < b[sortByKey]) return -1 * sortOrder;
+                    if (a[sortByKey] > b[sortByKey]) return 1 * sortOrder;
+                    return 0;
+                });
+            }
+            const startIndex = (page - 1) * limit;
+            const endIndex = startIndex + limit;
+            const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(totalDocs / limit);
+            const pagingCounter = (page - 1) * limit + 1;
+            const hasPrevPage = page > 1;
+            const hasNextPage = page < totalPages;
+            const prevPage = hasPrevPage ? page - 1 : null;
+            const nextPage = hasNextPage ? page + 1 : null;
+            return {
+                docs: paginatedProducts,
+                totalDocs,
+                limit,
+                totalPages,
+                page,
+                pagingCounter,
+                hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
     getProductById(id) {
         try {
             id = parseInt(id);

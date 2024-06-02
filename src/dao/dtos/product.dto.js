@@ -8,5 +8,6 @@ export default class ProductDTO {
         this.stock = product.stock ? (isNaN(product.stock) || product.stock < 0 ? 1 : parseInt(product.stock)) : 0;
         this.category = product.category?.trim() || 'Otros';
         this.thumbnails = Array.isArray(product.thumbnails) ? product.thumbnails : (product.thumbnails ? product.thumbnails.split(',').map(thumbnail => thumbnail.trim()) : []);
+        this.owner = product.owner?.trim() || 'admin';
     }
 }

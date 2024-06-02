@@ -1,5 +1,4 @@
 import fs from 'fs';
-
 export default class CartsFsDAO {
     static #instance;
     url = 'src/dao/fs/data/carts.json';

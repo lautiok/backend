@@ -14,7 +14,12 @@ resetPasswordForm.addEventListener('submit', async (event) => {
         });
         const data = await response.json();
         if (data.status === 'error') {
-            alert(data.message);
+            if (data.message === 'No se ha proporcionado un token válido') {
+                alert(`${data.message}. Serás redirigido a la página para solicitar un nuevo enlace de restauración de contraseña`);
+                window.location.href = '/restore-password';
+            } else {
+                alert(data.message);
+            }
         } else {
             alert(data.message);
             window.location.href = '/login';

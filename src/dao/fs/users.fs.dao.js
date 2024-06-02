@@ -31,6 +31,14 @@ export default class UsersFsDAO {
         }
     }
 
+    getUserById(id) {
+        try {
+            return this.users.find(user => user._id === id);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     getUserByEmail(email) {
         try {
             return this.users.find(user => user.email === email);

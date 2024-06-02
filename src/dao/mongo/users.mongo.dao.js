@@ -20,6 +20,14 @@ export default class UsersMongoDAO {
         }
     }
 
+    async getUserById(id) {
+        try {
+            return await userModel.findById(id);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getUserByEmail(email) {
         try {
             return await userModel.findOne({ email });

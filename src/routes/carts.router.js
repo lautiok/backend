@@ -16,22 +16,23 @@ export default class CartsRouter extends CustomRouter {
     }
 
     init() {
-        this.post('/', ['PUBLIC'], CartsController.getInstance().createCart);
+        this.post('/', ['PUBLIC'], CartsController.createCart);
 
-        this.get('/:cid', ['USER'], CartsController.getInstance().getCartById);
+        this.get('/:cid', ['USER', 'PREMIUM'], CartsController.getCartById);
 
-        this.post('/:cid/products/:pid', ['USER'], this.validateQuantity, CartsController.getInstance().addProduct);
+        this.post('/:cid/products/:pid', ['USER', 'PREMIUM'], this.validateProductQuantity, CartsController.addProduct);
 
-        this.put('/:cid/products/:pid', ['USER'], this.validateQuantity, CartsController.getInstance().updateProductQuantity);
+        this.put('/:cid/products/:pid', ['USER', 'PREMIUM'], this.validateProductQuantity, CartsController.updateProductQuantity);
 
-        this.delete('/:cid/products/:pid', ['USER'], CartsController.getInstance().removeProduct);
+        this.delete('/:cid/products/:pid', ['USER', 'PREMIUM'], CartsController.removeProduct);
 
-        this.delete('/:cid', ['USER'], CartsController.getInstance().deleteCart);
+        this.delete('/:cid', ['USER', 'PREMIUM'], CartsController.deleteCart);
 
-        this.post('/:cid/purchase', ['USER'], CartsController.getInstance().purchaseCart);
+        this.post('/:cid/purchase', ['USER', 'PREMIUM'], CartsController.purchaseCart);
     }
 
-    validateQuantity(req, res, next) {
+    validateProductQuantity(req, res, next) {
+        // Si la cantidad es menor a 1 o no es un número, se asigna 1
         req.quantity = req.body.quantity ? (parseInt(req.body.quantity) < 1 || isNaN(parseInt(req.body.quantity)) ? 1 : parseInt(req.body.quantity)) : 1;
         next();
     }

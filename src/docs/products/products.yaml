@@ -1,525 +1,12 @@
 paths:
-  /api/carts/:
-    post:
-      summary: Crear un carrito
-      tags:
-        - carts
-      responses:
-        "200":
-          description: Carrito creado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-  /api/carts/{cid}:
+  /api/products/:
     get:
-      summary: Obtener un carrito
+      summary: Obtener todos los productos
       tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
+        - products
       responses:
         "200":
-          description: Carrito encontrado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "401":
-          description: No autenticado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autenticado
-        "403":
-          description: No autorizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autorizado
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-    delete:
-      summary: Vaciar un carrito
-      tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Carrito vaciado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "401":
-          description: No autenticado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autenticado
-        "403":
-          description: No autorizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autorizado
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-  /api/carts/{cid}/products/{pid}:
-    post:
-      summary: Añadir un producto a un carrito
-      tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
-        - name: pid
-          in: path
-          description: Identificador único del producto
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/requestBodies/addProduct"
-      responses:
-        "200":
-          description: Producto añadido al carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "401":
-          description: No autenticado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autenticado
-        "403":
-          description: No autorizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autorizado
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-    put:
-      summary: Actualizar la cantidad de un producto de un carrito
-      tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
-        - name: pid
-          in: path
-          description: Identificador único del producto
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/requestBodies/updateProductQuantity"
-      responses:
-        "200":
-          description: Cantidad de producto actualizada en el carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "401":
-          description: No autenticado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autenticado
-        "403":
-          description: No autorizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autorizado
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-    delete:
-      summary: Eliminar un producto de un carrito
-      tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
-        - name: pid
-          in: path
-          description: Identificador único del producto
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Producto eliminado del carrito
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: success
-                  payload:
-                    $ref: "#/components/schemas/Cart"
-        "400":
-          description: Error del usuario
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del usuario
-        "401":
-          description: No autenticado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autenticado
-        "403":
-          description: No autorizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: No autorizado
-        "500":
-          description: Error del servidor
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: Estado de la petición
-                    example: error
-                  message:
-                    type: string
-                    description: Mensaje de error
-                    example: Error del servidor
-  /api/carts/{cid}/purchase:
-    post:
-      summary: Realizar la compra de un carrito
-      tags:
-        - carts
-      parameters:
-        - name: cid
-          in: path
-          description: Identificador único del carrito
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Compra realizada
+          description: Todos los productos
           content:
             application/json:
               schema:
@@ -532,33 +19,384 @@ paths:
                   payload:
                     type: object
                     properties:
-                      ticket:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                            description: Código de la compra
-                            example: 5f7b1b3b7f3b3b001f3b3b7f
-                          purchase_datetime:
-                            type: string
-                            description: Fecha y hora de la compra
-                            example: 2020-10-05T20:00:00.000Z
-                          amount:
-                            type: number
-                            description: Monto total de la compra
-                            example: 100
-                          purchaser:
-                            type: string
-                            description: Correo electrónico del comprador
-                            example: user@mail.com
-                      productsNotPurchased:
+                      docs:
                         type: array
                         items:
-                          type: string
-                        description: Productos no comprados
-                        example:
-                          - Producto 1
-                          - Producto 2
+                          $ref: "#/components/schemas/Product"
+                      totalDocs:
+                        type: number
+                        description: Total de productos
+                        example: 1
+                      limit:
+                        type: number
+                        description: Límite de productos por página
+                        example: 10
+                      totalPages:
+                        type: number
+                        description: Total de páginas
+                        example: 1
+                      page:
+                        type: number
+                        description: Página actual
+                        example: 1
+                      pagingCounter:
+                        type: number
+                        description: Contador de páginas
+                        example: 1
+                      hasPrevPage:
+                        type: boolean
+                        description: Indica si hay una página anterior
+                        example: false
+                      hasNextPage:
+                        type: boolean
+                        description: Indica si hay una página siguiente
+                        example: false
+                      prevPage:
+                        type: number
+                        description: Página anterior
+                        example: 1
+                      nextPage:
+                        type: number
+                        description: Página siguiente
+                        example: 1
+        "400":
+          description: Error del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del usuario
+        "401":
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autenticado
+        "403":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autorizado
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del servidor
+    post:
+      summary: Crear un producto
+      tags:
+        - products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/createProduct"
+      responses:
+        "200":
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: success
+                  payload:
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: Error del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del usuario
+        "401":
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autenticado
+        "403":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autorizado
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del servidor
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto
+      tags:
+        - products
+      parameters:
+        - name: pid
+          in: path
+          description: Identificador único del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: success
+                  payload:
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: Error del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                  message:
+                    type: string
+                    description: Mensaje de error
+        "401":
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                  message:
+                    type: string
+                    description: Mensaje de error
+        "403":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                  message:
+                    type: string
+                    description: Mensaje de error
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                  message:
+                    type: string
+                    description: Mensaje de error
+    put:
+      summary: Actualizar un producto
+      tags:
+        - products
+      parameters:
+        - name: pid
+          in: path
+          description: Identificador único del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: success
+                  payload:
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: Error del usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del usuario
+        "401":
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autenticado
+        "403":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: No autorizado
+        "500":
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de error
+                    example: Error del servidor
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - products
+      parameters:
+        - name: pid
+          in: path
+          description: Identificador único del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la petición
+                    example: success
+                  payload:
+                    $ref: "#/components/schemas/Product"
         "400":
           description: Error del usuario
           content:
@@ -622,44 +460,137 @@ paths:
 
 components:
   schemas:
-    Cart:
+    Product:
       type: object
       properties:
         _id:
           type: ObjectId
-          description: Identificador único del carrito
-        products:
+          description: Identificador único del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto
+        price:
+          type: number
+          description: Precio del producto
+        status:
+          type: boolean
+          description: Estado del producto (disponible o no)
+        stock:
+          type: number
+          description: Cantidad de productos en stock
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnails:
           type: array
           items:
-            type: object
-            properties:
-              product:
-                type: ObjectId
-                description: Identificador único del producto
-              quantity:
-                type: number
-                description: Cantidad de productos
+            type: string
+          description: Imágenes del producto
+        owner:
+          type: string
+          description: Propietario del producto
       example:
-        _id: 5f7b1b3b7f3b3b001f3b3b7f
-        products:
-          - product: 5f7b1b3b7f3b3b001f3b3b7f
-            quantity: 2
-          - product: 5f7b1b3b7f3b3b001f3b3b7f
-            quantity: 3
+        _id: 60f7b3b3b3b3b3b3b3b3b3b3
+        title: Producto de ejemplo
+        description: Este es un producto de ejemplo
+        code: PR000
+        price: 99.99
+        status: true
+        stock: 100
+        category: Ejemplo
+        thumbnails:
+          [https://example.com/product1.jpg, https://example.com/product2.jpg]
+        owner: user@mail.com
   requestBodies:
-    addProduct:
+    createProduct:
       type: object
       properties:
-        quantity:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto
+        price:
           type: number
-          description: Cantidad de productos
+          description: Precio del producto
+        status:
+          type: boolean
+          description: Estado del producto (disponible o no)
+        stock:
+          type: number
+          description: Cantidad de productos en stock
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnails:
+          type: array
+          items:
+            type: string
+          description: Imágenes del producto
+        owner:
+          type: string
+          description: Propietario del producto
       example:
-        quantity: 2
-    updateProductQuantity:
+        title: Producto de ejemplo
+        description: Este es un producto de ejemplo
+        code: PR000
+        price: 99.99
+        status: true
+        stock: 100
+        category: Ejemplo
+        thumbnails:
+          [https://example.com/product1.jpg, https://example.com/product2.jpg]
+        owner: user@mail.com
+    updateProduct:
       type: object
       properties:
-        quantity:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto
+        price:
           type: number
-          description: Cantidad de productos
+          description: Precio del producto
+        status:
+          type: boolean
+          description: Estado del producto (disponible o no)
+        stock:
+          type: number
+          description: Cantidad de productos en stock
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnails:
+          type: array
+          items:
+            type: string
+          description: Imágenes del producto
+        owner:
+          type: string
+          description: Propietario del producto
       example:
-        quantity: 3
+        title: Producto de ejemplo actualizado
+        description: Este es un producto de ejemplo
+        code: PR000
+        price: 99.99
+        status: true
+        stock: 100
+        category: Ejemplo
+        thumbnails:
+          [https://example.com/product1.jpg, https://example.com/product2.jpg]
+        owner: user@mail.com

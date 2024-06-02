@@ -15,10 +15,32 @@ export default class ProductsMongoDAO {
     async getProducts(queryParams) {
         try {
             const { limit, page, status, category, sort } = queryParams;
+            // Se crea un objeto con los filtros que se aplicarán a la consulta
             const filter = {};
+            // Si el parámetro status no es nulo, se agrega al filtro
             if (status !== null) {
                 filter.status = status;
             }
+            // Si el parámetro category no es nulo, se agrega al filtro
+            if (category) {
+                filter.category = category;
+            }
+            return await productModel.paginate(filter, { limit, page, sort, lean: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getProductsByOwner(queryParams, owner) {
+        try {
+            const { limit, page, status, category, sort } = queryParams;
+            // Se crea un objeto con los filtros que se aplicarán a la consulta
+            const filter = { owner };
+            // Si el parámetro status no es nulo, se agrega al filtro
+            if (status !== null) {
+                filter.status = status;
+            }
+            // Si el parámetro category no es nulo, se agrega al filtro
             if (category) {
                 filter.category = category;
             }

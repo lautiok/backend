@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-
 dotenv.config();
-
 export default class MailingServices {
     static #instance;
 
@@ -14,7 +12,7 @@ export default class MailingServices {
             secure: false,
             auth: {
                 user: process.env.NODEMAILER_USER,
-                pass: process.env.NODEMAILER_PASSWORD
+                pass: process.env.NODEMAILER_PASS
             },
             tls: {
                 rejectUnauthorized: false
@@ -34,12 +32,12 @@ export default class MailingServices {
             return await this.transport.sendMail({
                 from: `Programación Backend <${process.env.NODEMAILER_USER}>`,
                 to: user.email,
-                subject: 'Reestablecer contraseña',
+                subject: 'Reestablecer contraseñas',
                 html:
                     `<p>Hola ${user.first_name},</p>
-                    <p>Para reestablecer tu contraseña, haz clic en el siguiente enlace:</p>
+                    <p>Para recuperar tu contraseña, haz clic en el siguiente enlace:</p>
                     <a href="${resetLink}">Reestablecer contraseña</a>
-                    <p>Si no solicitaste reestablecer tu contraseña, ignora este mensaje.</p>`
+                    <p>Si no solicitaste reestablecer tu contraseña, ignora este mail.</p>`
             });
         } catch (error) {
             throw error;

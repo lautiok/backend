@@ -22,9 +22,9 @@ export default class ViewsRouter extends CustomRouter {
 
         this.get('/register', ['PUBLIC'], ViewsController.getInstance().renderRegister);
 
-        this.get('/restore-password', ['PUBLIC'], ViewsController.getInstance().renderRestorePassword);
+        this.get('/restorepassword', ['PUBLIC'], ViewsController.getInstance().renderRestorePassword);
 
-        this.get('/reset-password', ['PUBLIC'], ViewsController.getInstance().renderResetPassword);
+        this.get('/resetpassword', ['PUBLIC'], ViewsController.getInstance().renderResetPassword);
 
         this.get('/products', ['USER'], ViewsController.getInstance().renderProducts);
 
@@ -40,17 +40,17 @@ export default class ViewsRouter extends CustomRouter {
 
         this.get('/premium/product/:pid', ['PREMIUM'], ViewsController.getInstance().renderPremiumProduct);
 
-        this.get('/premium/add-product', ['PREMIUM'], ViewsController.getInstance().renderPremiumAddProduct);
+        this.get('/premium/addproduct', ['PREMIUM'], ViewsController.getInstance().renderPremiumAddProduct);
 
-        this.get('/premium/edit-product/:pid', ['PREMIUM'], ViewsController.getInstance().renderPremiumEditProduct);
+        this.get('/premium/editproduct/:pid', ['PREMIUM'], ViewsController.getInstance().renderPremiumEditProduct);
 
         this.get('/admin/products', ['ADMIN'], ViewsController.getInstance().renderAdminProducts);
 
         this.get('/admin/product/:pid', ['ADMIN'], ViewsController.getInstance().renderAdminProduct);
 
-        this.get('/admin/add-product', ['ADMIN'], ViewsController.getInstance().renderAdminAddProduct);
+        this.get('/admin/addproduct', ['ADMIN'], ViewsController.getInstance().renderAdminAddProduct);
 
-        this.get('/admin/edit-product/:pid', ['ADMIN'], ViewsController.getInstance().renderAdminEditProduct);
+        this.get('/admin/editproduct/:pid', ['ADMIN'], ViewsController.getInstance().renderAdminEditProduct);
 
         this.get('*', ['ALL'], ViewsController.getInstance().renderNotFound);
     }

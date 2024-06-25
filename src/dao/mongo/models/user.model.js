@@ -9,7 +9,17 @@ const userSchema = new Schema({
     age: { type: Number },
     password: { type: String },
     cart: { type: SchemaTypes.ObjectId, ref: 'carts', unique: true },
-    role: { type: String }
+    role: { type: String },
+    documents: {
+        type: [
+            {
+                name: { type: String },
+                reference: { type: String }
+            }
+        ],
+        default: []
+    },
+    last_connection: { type: Date, default: Date.now },
 });
 
 const userModel = model(usersCollection, userSchema);

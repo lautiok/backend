@@ -6,6 +6,7 @@
     "scripts": {
         "start": "cross-env NODE_ENV=production node ./src/app.js -p mongo",
         "dev": "cross-env NODE_ENV=development nodemon ./src/app.js -p mongo",
+        "start:dev-fs": "node ./src/app.js -s fs",
         "supertest": "cross-env NODE_ENV=development mocha ./test/supertest.test.js"
     },
     "keywords": [],
@@ -22,6 +23,7 @@
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.2.0",
         "mongoose-paginate-v2": "^1.8.0",
+        "multer": "^1.4.5-lts.1",
         "nodemailer": "^6.9.13",
         "passport": "^0.7.0",
         "passport-github2": "^0.1.12",

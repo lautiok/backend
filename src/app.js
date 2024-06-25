@@ -39,9 +39,11 @@ app.set('view engine', 'handlebars');
 initializePassport();
 app.use(passport.initialize());
 
+app.use('/api/sessions', SessionsRouter.getInstance().getRouter());
+app.use('/api/users', UsersRouter.getInstance().getRouter());
 app.use('/api/products', ProductsRouter.getInstance().getRouter());
 app.use('/api/carts', CartsRouter.getInstance().getRouter());
-app.use('/api/sessions', SessionsRouter.getInstance().getRouter());
+app.use('/api/tickets', TicketsRouter.getInstance().getRouter());
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 

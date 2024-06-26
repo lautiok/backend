@@ -18,6 +18,8 @@ import swaggerUi from 'swagger-ui-express';
 import ViewsRouter from './routes/views.router.js';
 import initializeSocket from './config/socket.config.js';
 import options from './config/config.js';
+import TicketsRouter from './routes/tickets.router.js';
+import UsersRouter from './routes/users.router.js';
 initializePersistence(options.storage);
 dotenv.config();
 const app = express();

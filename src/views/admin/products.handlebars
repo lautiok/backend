@@ -1,13 +1,12 @@
-<h1>Listado de productos</h1>
-
-<h2>Bienvenido {{user.first_name}}</h2>
+<h1>Productos</h1>
 
 <nav>
     <a href="/admin/add-product">Agregar producto</a>
 
-    <button onclick="logout()">Cerrar sesión</button>
+    <a href="/admin/main">Volver</a>
 </nav>
 
+{{#if products}}
 <form class="query-params-form" id="queryParamsForm">
     <div>
         <label for="limit">Límite</label>
@@ -57,6 +56,7 @@
         <th>Status</th>
         <th>Stock</th>
         <th>Categoría</th>
+        <th>Propietario</th>
     </tr>
 
     {{#each products}}
@@ -69,6 +69,7 @@
         <td>{{status}}</td>
         <td>{{stock}}</td>
         <td>{{category}}</td>
+        <td>{{owner}}</td>
         <td class="last-td">
             <a href="/admin/product/{{_id}}">Ver</a>
         </td>
@@ -92,4 +93,6 @@
     {{/if}}
 </div>
 
-<script src="/js/admin/products.js"></script>
+{{else}}
+<h2>No hay productos</h2>
+{{/if}}

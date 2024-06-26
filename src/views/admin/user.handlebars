@@ -1,10 +1,10 @@
 <h1>Usuario ID {{user._id}}</h1>
 
 <nav>
-    <a href="/products">Volver</a>
+    <a href="/admin/users">Volver</a>
 </nav>
 
-<div class="profile-info">
+<div class="user-info">
     <p>Nombre: {{user.first_name}}</p>
     <p>Apellido: {{user.last_name}}</p>
     <p>Correo electrónico: {{user.email}}</p>
@@ -25,9 +25,9 @@
     {{/if}}
     <p>Última conexión: {{user.last_connection}}</p>
     <div>
-        <a href="/upload-documents">Subir documentos</a>
         <button onclick="changeUserRole('{{user._id}}')">Cambiar rol</button>
+        <button onclick="deleteUser('{{user._id}}')">Eliminar</button>
     </div>
 </div>
 
-<script src="/js/user/profile.js"></script>
+<script src="/js/admin/user.js"></script>

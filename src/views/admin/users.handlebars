@@ -1,0 +1,59 @@
+<h1>Usuarios</h1>
+
+<nav>
+    {{#if users}}
+    <button onclick="deleteUsers()">Eliminar usuarios inactivos</button>
+    {{/if}}
+
+    <a href="/admin/main">Volver</a>
+</nav>
+
+{{#if users}}
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Edad</th>
+        <th>Rol</th>
+        <th>Última conexión</th>
+    </tr>
+
+    {{#each users}}
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{first_name}}</td>
+        <td>{{last_name}}</td>
+        <td>{{email}}</td>
+        <td>{{age}}</td>
+        <td>{{role}}</td>
+        <td>{{last_connection}}</td>
+        <td class="last-td">
+            <a href="/admin/user/{{_id}}">Ver</a>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+<div>
+    {{#if pagination.hasPrevPage}}
+    <a href={{pagination.prevLink}}>Anterior</a>
+    {{else}}
+    <a>Anterior</a>
+    {{/if}}
+
+    <p>Página {{pagination.page}} de {{pagination.totalPages}}</p>
+
+    {{#if pagination.hasNextPage}}
+    <a href={{pagination.nextLink}}>Siguiente</a>
+    {{else}}
+    <a>Siguiente</a>
+    {{/if}}
+</div>
+
+{{else}}
+<h2>No hay usuarios</h2>
+{{/if}}
+
+<script src="/js/admin/users.js"></script>

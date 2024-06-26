@@ -1,39 +1,67 @@
-import CustomRouter from './custom.router.js';
-import CartsController from '../controllers/carts.controller.js';
+import CustomRouter from "./custom.router.js";
+import CartsController from "../controllers/carts.controller.js";
 
 export default class CartsRouter extends CustomRouter {
-    static #instance;
+  static #instance;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (!this.#instance) {
+      this.#instance = new CartsRouter();
     }
+    return this.#instance;
+  }
 
-    static getInstance() {
-        if (!this.#instance) {
-            this.#instance = new CartsRouter();
-        }
-        return this.#instance;
-    }
+  init() {
+    this.get(
+      "/:cid",
+      ["USER", "PREMIUM", "ADMIN"],
+      CartsController.getCartById
+    );
 
-    init() {
-        this.post('/', ['PUBLIC'], CartsController.createCart);
+    this.post("/", ["ADMIN"], CartsController.createCart);
 
-        this.get('/:cid', ['USER', 'PREMIUM'], CartsController.getCartById);
+    this.put("/:cid", ["USER", "PREMIUM", "ADMIN"], CartsController.clearCart);
 
-        this.post('/:cid/products/:pid', ['USER', 'PREMIUM'], this.validateProductQuantity, CartsController.addProduct);
+    this.delete("/:cid", ["ADMIN"], CartsController.deleteCart);
 
-        this.put('/:cid/products/:pid', ['USER', 'PREMIUM'], this.validateProductQuantity, CartsController.updateProductQuantity);
+    this.post(
+      "/:cid/products/:pid",
+      ["USER", "PREMIUM", "ADMIN"],
+      this.validateProductQuantity,
+      CartsController.addProduct
+    );
 
-        this.delete('/:cid/products/:pid', ['USER', 'PREMIUM'], CartsController.removeProduct);
+    this.put(
+      "/:cid/products/:pid",
+      ["USER", "PREMIUM", "ADMIN"],
+      this.validateProductQuantity,
+      CartsController.updateProductQuantity
+    );
 
-        this.delete('/:cid', ['USER', 'PREMIUM'], CartsController.deleteCart);
+    this.delete(
+      "/:cid/products/:pid",
+      ["USER", "PREMIUM", "ADMIN"],
+      CartsController.removeProduct
+    );
 
-        this.post('/:cid/purchase', ['USER', 'PREMIUM'], CartsController.purchaseCart);
-    }
+    this.post(
+      "/:cid/purchase",
+      ["USER", "PREMIUM"],
+      CartsController.purchaseCart
+    );
+  }
 
-    validateProductQuantity(req, res, next) {
-        // Si la cantidad es menor a 1 o no es un número, se asigna 1
-        req.quantity = req.body.quantity ? (parseInt(req.body.quantity) < 1 || isNaN(parseInt(req.body.quantity)) ? 1 : parseInt(req.body.quantity)) : 1;
-        next();
-    }
+  validateProductQuantity(req, res, next) {
+    // Si la cantidad es menor a 1 o no es un número, se asigna 1
+    req.quantity = req.body.quantity
+      ? parseInt(req.body.quantity) < 1 || isNaN(parseInt(req.body.quantity))
+        ? 1
+        : parseInt(req.body.quantity)
+      : 1;
+    next();
+  }
 }

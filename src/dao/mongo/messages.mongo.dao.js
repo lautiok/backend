@@ -1,30 +1,30 @@
-import messageModel from './models/message.model.js';
+import messageModel from "./models/message.model.js";
 
 export default class MessagesMongoDAO {
-    static #instance;
+  static #instance;
 
-    constructor() { }
+  constructor() {}
 
-    static getInstance() {
-        if (!this.#instance) {
-            this.#instance = new MessagesMongoDAO();
-        }
-        return this.#instance;
+  static getInstance() {
+    if (!this.#instance) {
+      this.#instance = new MessagesMongoDAO();
     }
+    return this.#instance;
+  }
 
-    async addMessage(message) {
-        try {
-            return await messageModel.create(message);
-        } catch (error) {
-            throw error;
-        }
+  async addMessage(message) {
+    try {
+      return await messageModel.create(message);
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async getMessages() {
-        try {
-            return await messageModel.find();
-        } catch (error) {
-            throw error;
-        }
+  async getMessages() {
+    try {
+      return await messageModel.find();
+    } catch (error) {
+      throw error;
     }
+  }
 }

@@ -13,6 +13,7 @@
     <p>Stock: {{product.stock}}</p>
     <p>Categoría: {{product.category}}</p>
     <p>Imágenes: {{product.thumbnails}}</p>
+    <p>Propietario: {{product.owner}}</p>
     <div class="product-add-to-cart">
         {{#if product.status}}
         <input type="number" id="quantity" value="1" min="1" max="{{product.stock}}" onkeydown="return false">

@@ -1,51 +1,99 @@
-<h1>Carrito ID {{cart._id}}</h1>
+<section>
+    <h1>Listado de productos propiedad de {{user.email}}</h1>
 
 <nav>
+    <a href="/premium/add-product">Agregar producto</a>
+
     <a href="/products">Volver</a>
 </nav>
 
-{{#if cart.products}}
+{{#if products}}
+<form class="query-params-form" id="queryParamsForm">
+    <div>
+        <label for="limit">Límite</label>
+        <input type="number" id="limit" name="limit">
+    </div>
+
+    <div>
+        <label for="page">Página</label>
+        <input type="number" id="page" name="page">
+    </div>
+
+    <div>
+        <label for="status">Estado</label>
+        <select id="status" name="status">
+            <option value="">Seleccionar</option>
+            <option value="true">Disponible</option>
+            <option value="false">No disponible</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="category">Categoría</label>
+        <input type="text" id="category" name="category">
+    </div>
+
+    <div>
+        <label for="sort">Ordenar por precio</label>
+        <select id="sort" name="sort">
+            <option value="">Seleccionar</option>
+            <option value="1">Ascendente</option>
+            <option value="-1">Descendente</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Aplicar</button>
+    </div>
+</form>
+
 <table>
     <tr>
-        <th>Nombre</th>
+        <th>ID</th>
+        <th>Título</th>
         <th>Descripción</th>
+        <th>Código</th>
         <th>Precio</th>
-        <th>Cantidad</th>
+        <th>Status</th>
         <th>Stock</th>
-        <th>Subtotal</th>
+        <th>Categoría</th>
     </tr>
 
-    {{#each cart.products}}
+    {{#each products}}
     <tr>
-        <td>{{product.title}}</td>
-        <td>{{product.description}}</td>
-        <td>${{product.price}}</td>
-        <td>{{quantity}}</td>
-        <td>{{product.stock}}</td>
-        <td>${{total}}</td>
+        <td>{{_id}}</td>
+        <td>{{title}}</td>
+        <td>{{description}}</td>
+        <td>{{code}}</td>
+        <td>${{price}}</td>
+        <td>{{status}}</td>
+        <td>{{stock}}</td>
+        <td>{{category}}</td>
         <td class="last-td">
-            <div>
-                <input type="number" id="quantity-{{product._id}}" class="cart-product-quantity-input"
-                    value="{{quantity}}" min="1" max="{{product.stock}}" onkeydown="return false">
-                <button onclick="updateProductQuantity('{{product._id}}', '{{../cart._id}}')">Modificar</button>
-            </div>
-        </td>
-        <td class="last-td">
-            <button onclick="removeProductFromCart('{{product._id}}', '{{../cart._id}}')">Eliminar</button>
+            <a href="/premium/product/{{_id}}">Ver</a>
         </td>
     </tr>
     {{/each}}
 </table>
 
-<h2>Total del carrito ${{cart.total}}</h2>
-
 <div>
-    <button onclick="clearCart('{{cart._id}}')">Vaciar carrito</button>
-    <button onclick="purchaseCart('{{cart._id}}')">Comprar carrito</button>
+    {{#if pagination.hasPrevPage}}
+    <a href={{pagination.prevLink}}>Anterior</a>
+    {{else}}
+    <a>Anterior</a>
+    {{/if}}
+
+    <p>Página {{pagination.page}} de {{pagination.totalPages}}</p>
+
+    {{#if pagination.hasNextPage}}
+    <a href={{pagination.nextLink}}>Siguiente</a>
+    {{else}}
+    <a>Siguiente</a>
+    {{/if}}
 </div>
 
 {{else}}
 <h2>No hay productos</h2>
 {{/if}}
-
+</section>
 <script src="/js/user/cart.js"></script>

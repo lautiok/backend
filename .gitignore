@@ -1,5 +1,4 @@
 node_modules/
 src/dao/fs/data/
-.env.dev
-.env.prod
+.env
 errors.log

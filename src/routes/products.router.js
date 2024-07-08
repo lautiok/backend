@@ -1,5 +1,5 @@
+import ProductsController from '../controllers/products.controller.js';
 import CustomRouter from './custom.router.js';
-import productsController from '../controllers/products.controller.js';
 
 export default class ProductsRouter extends CustomRouter {
     static #instance;
@@ -16,15 +16,15 @@ export default class ProductsRouter extends CustomRouter {
     }
 
     init() {
-        this.get('/', ['ALL'], productsController.getProducts);
+        this.get('/', ['ALL'], ProductsController.getProducts);
 
-        this.get('/:pid', ['ALL'], productsController.getProductById);
+        this.get('/:pid', ['ALL'], ProductsController.getProductById);
 
-        this.post('/', ['PREMIUM', 'ADMIN'], this.validateProductFields, productsController.createProduct);
+        this.post('/', ['PREMIUM', 'ADMIN'], this.validateProductFields, ProductsController.createProduct);
 
-        this.put('/:pid', ['PREMIUM', 'ADMIN'], this.validateProductFields, productsController.updateProduct);
+        this.put('/:pid', ['PREMIUM', 'ADMIN'], this.validateProductFields, ProductsController.updateProduct);
 
-        this.delete('/:pid', ['PREMIUM', 'ADMIN'], productsController.deleteProduct);
+        this.delete('/:pid', ['PREMIUM', 'ADMIN'], produ.deleteProduct);
     }
 
     validateProductFields(req, res, next) {

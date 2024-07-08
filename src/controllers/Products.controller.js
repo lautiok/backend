@@ -1,7 +1,7 @@
 import ProductsServices from '../services/products.services.js';
 import MailingServices from '../services/mailing.services.js';
 
-export default class productsController {
+export default class ProductsController {
     static async getProducts(req, res) {
         try {
             const queryParams = req.query;

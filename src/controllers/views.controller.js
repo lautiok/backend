@@ -14,10 +14,6 @@ export default class ViewsController {
     return this.#instance;
   }
 
-  renderIndex(req, res) {
-    res.render("general/index");
-  }
-
   renderLogin(req, res) {
     res.render("general/login");
   }

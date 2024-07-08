@@ -107,7 +107,6 @@ export default class CustomRouter {
           .status(401)
           .json({ status: "error", message: "Token inválido" });
       }
-      // Si el usuario no tiene permisos, se devuelve un error
       if (!policies.includes(user.role.toUpperCase())) {
         req.logger.warning("No tienes permisos para realizar esta acción");
         return res

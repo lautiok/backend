@@ -1,5 +1,5 @@
 import CustomRouter from "./custom.router.js";
-import TicketsController from "../controllers/tickets.contoller.js";
+import TicketsController from "../controllers/tickets.controller.js";
 
 export default class TicketsRouter extends CustomRouter {
   static #instance;

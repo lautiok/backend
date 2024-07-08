@@ -32,7 +32,7 @@ export default class CartsController {
   static async createCart(req, res) {
     try {
       const payload = await CartsServices.createCart();
-      req.logger.info(`Carrito id ${payload._id} creado `);
+      req.logger.info(`Carrito id ${payload._id} creado exitosamente`);
       res.sendSuccess(payload);
     } catch (error) {
       req.logger.error(`Error al crear carrito: ${error.message}`);

@@ -1,10 +1,7 @@
-import { program } from 'commander';
+import options from "./args.config.js";
+import dotenv from "dotenv";
 
-program
-    .option('-s, --storage <type>', 'Tipo de persistencia (mongo o fs)', 'mongo')
-    .option('-e, --environment <env>', 'Entorno de ejecución (development o produdction)', 'development')
-    .parse(process.argv);
-
-const options = program.opts();
-
-export default options;
+const environment = options.environment;
+dotenv.config({
+  path: environment === "development" ? "./.env.dev" : "./.env.prod",
+});

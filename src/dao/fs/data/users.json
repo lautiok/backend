@@ -1,0 +1,43 @@
+[
+    {
+        "_id": 1,
+        "first_name": "Test",
+        "last_name": "test",
+        "email": "test@coder.com",
+        "age": 43,
+        "password": "$2b$10$ilHyF3/J/Fid7A078rUO8eT9PRyxDZJWaZeC8HuG4jz7kM6tIaemu",
+        "cart": 1,
+        "role": "premium",
+        "documents": [
+            {
+                "name": "profile",
+                "reference": "uploads/profiles/1-profile.jpg"
+            },
+            {
+                "name": "id",
+                "reference": "uploads/documents/1-id.jpg"
+            },
+            {
+                "name": "adress",
+                "reference": "uploads/documents/1-adress.jpg"
+            },
+            {
+                "name": "account",
+                "reference": "uploads/documents/1-account.jpg"
+            }
+        ],
+        "last_connection": "2024-06-10T18:52:43.224Z"
+    },
+    {
+        "_id": 2,
+        "first_name": "Test",
+        "last_name": "User",
+        "email": "test@user.com",
+        "age": 43,
+        "password": "$2b$10$sMb7neyzNI48XA3RNXjFu.da9TDbtds6O4WlsA5cS5eMcWhsUU3Ia",
+        "cart": 2,
+        "role": "user",
+        "documents": [],
+        "last_connection": "2024-06-10T18:53:04.441Z"
+    }
+]

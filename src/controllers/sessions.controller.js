@@ -1,10 +1,11 @@
 import { generateToken, validateToken } from "../utils/tokens.utils.js";
-import dotenv from "dotenv";
 import UsersServices from "../services/users.services.js";
 import MailingServices from "../services/mailing.services.js";
 import { isValidPassword } from "../utils/passwords.utils.js";
+import dotenv from "dotenv";
 
 dotenv.config();
+
 export default class SessionsController {
   static register(req, res) {
     const user = req.user;
@@ -73,11 +74,8 @@ export default class SessionsController {
           `No existe un usuario registrado con el correo electrónico ${email}`
         );
       }
-      // Se genera un token con la información del usuario
       const token = generateToken({ email });
-      // Se genera el enlace para reestablecer la contraseña
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-      // Se envía un correo electrónico con el enlace de reestablecimiento
       await MailingServices.getInstance().sendResetPasswordEmail(
         user,
         resetLink
@@ -111,13 +109,11 @@ export default class SessionsController {
           "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial"
         );
       }
-      // Se valida el token
       const decoded = validateToken(token);
       if (!decoded) {
         req.logger.warning("No se ha proporcionado un token válido");
         return res.sendUserError("No se ha proporcionado un token válido");
       }
-      // Se busca el usuario asociado al token
       const user = await UsersServices.getUserByEmail(decoded.email);
       if (!user) {
         req.logger.warning(
@@ -127,7 +123,6 @@ export default class SessionsController {
           "No se ha encontrado un usuario asociado al token proporcionado"
         );
       }
-      // Se verifica que la nueva contraseña sea diferente a la anterior
       if (isValidPassword(password, user)) {
         req.logger.warning(
           "La nueva contraseña no puede ser igual a la anterior"
@@ -136,7 +131,6 @@ export default class SessionsController {
           "La nueva contraseña no puede ser igual a la anterior"
         );
       }
-      // Se actualiza la contraseña del usuario
       user.password = password;
       await UsersServices.updateUserPassword(user._id, user);
       req.logger.info(

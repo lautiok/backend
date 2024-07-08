@@ -42,7 +42,6 @@ export default class ViewsController {
       user.isPremium = user.role === "premium";
       const payload = await ProductsServices.getProducts(queryParams);
       const { docs: products, ...pagination } = payload;
-      // Se generan los enlaces de paginación
       const baseUrl = "/products";
       if (pagination.hasPrevPage) {
         pagination.prevLink = `${baseUrl}?${new URLSearchParams({
@@ -77,14 +76,12 @@ export default class ViewsController {
     try {
       const { cid } = req.params;
       const cart = await CartsServices.getCartById(cid);
-      // Se calcula el total de cada producto
       cart.products = cart.products.map((product) => {
         return {
           ...product,
           total: product.product.price * product.quantity,
         };
       });
-      // Se calcula el total del carrito
       cart.total = cart.products
         .reduce((acc, product) => acc + product.total, 0)
         .toFixed(2);
@@ -116,7 +113,6 @@ export default class ViewsController {
       queryParams.owner = user.email;
       const payload = await ProductsServices.getProducts(queryParams);
       const { docs: products, ...pagination } = payload;
-      // Se generan los enlaces de paginación
       const baseUrl = "/premium/products";
       if (pagination.hasPrevPage) {
         pagination.prevLink = `${baseUrl}?${new URLSearchParams({
@@ -172,7 +168,6 @@ export default class ViewsController {
       const queryParams = req.query;
       const payload = await ProductsServices.getProducts(queryParams);
       const { docs: products, ...pagination } = payload;
-      // Se generan los enlaces de paginación
       const baseUrl = "/admin/products";
       if (pagination.hasPrevPage) {
         pagination.prevLink = `${baseUrl}?${new URLSearchParams({
@@ -221,7 +216,6 @@ export default class ViewsController {
       const queryParams = req.query;
       const payload = await UsersServices.getUsers(queryParams);
       const { docs: users, ...pagination } = payload;
-      // Se generan los enlaces de paginación
       const baseUrl = "/admin/users";
       if (pagination.hasPrevPage) {
         pagination.prevLink = `${baseUrl}?${new URLSearchParams({

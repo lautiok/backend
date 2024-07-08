@@ -1,5 +1,5 @@
 import CustomRouter from "./custom.router.js";
-import UsersController from "../controllers/user.controller.js";
+import UsersController from "../controllers/users.controller.js";
 import uploader from "../config/multer.config.js";
 
 export default class UsersRouter extends CustomRouter {

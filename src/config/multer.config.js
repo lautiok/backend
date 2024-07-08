@@ -1,5 +1,5 @@
 import multer from "multer";
-import __dirname from "../utils/dirname.js";
+import __dirname from "../utils/dirname.utils.js";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     ) {
       folder = "documents";
     }
-    cb(null, `${__dirname}/uploads/${folder}`);
+    cb(null, `${__dirname}/public/uploads/${folder}`);
   },
   filename: (req, file, cb) => {
     const user = req.user;
